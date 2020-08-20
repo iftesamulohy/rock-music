@@ -50,6 +50,9 @@
                     <button id="searchButton" class="btn btn-success search-btn">Search</button>
                 </div>
             </div>
+            <div id="displayLyrics">
+
+            </div>
             <div id="songDisplay" class="search-result col-md-8 mx-auto py-4">
                 
             </div>
@@ -89,7 +92,7 @@
         <p class="author lead">Album by <span>${song.artist.name}</span></p>
     </div>
     <div class="col-md-3 text-md-right text-center">
-        <button class="btn btn-success" onclick="getLyrics(${song.album.title},${song.artist.name})">Get Lyrics</button>
+        <button class="btn btn-success" onclick="getLyrics('${song.title}','${song.artist.name}')">Get Lyrics</button>
     </div>
 </div>`
 songDisplay.appendChild(div);
@@ -98,11 +101,20 @@ console.log(song.artist.name);
      });
      }
      function getLyrics(songName,artistName){
-         fetch(`https://api.lyrics.ovh/v1/${songName}/${artistName}`)
+         fetch(`https://api.lyrics.ovh/v1/${artistName}/${songName}`)
          .then(res=>res.json())
          .then(data => {
+            const displayLyrics = document.getElementById('displayLyrics');
+            displayLyrics.innerHTML=` <div class="single-lyrics text-center">
+    <button class="btn go-back">&lsaquo;</button>
+    <h2 class="text-success mb-4">${songName} - ${artistName}</h2>
+    <pre class="lyric text-white">
+        '${data.lyrics}'
+    </pre>
+</div>`
              console.log(data.lyrics);
          })
+
      }
     </script>
 </body>
